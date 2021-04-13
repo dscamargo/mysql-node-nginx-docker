@@ -2,21 +2,20 @@ version: "3.7"
 services:
   app:
     build:
-      context: .
-      dockerfile: ./docker/node.Dockerfile
+      context: ./node
+      dockerfile: ./node.Dockerfile
     ports:
       - "3000:3000"
-    entrypoint: dockerize -wait tcp://mysql:3306 -timeout 20s docker-entrypoint.sh
-    working_dir: /src/usr/app
+    entrypoint: dockerize -wait tcp://mysql:3306 -timeout 20s node index.js
     environment:
       PORT: 3000
       DB_NAME: docker
       DB_PASSWORD: docker
       DB_HOST: mysql
       DB_USER: root
-    command: npm run start
     volumes:
       - ./:/src/usr/app
+      - /src/usr/app/node_modules
     tty: true
     networks:
       - internal-network
@@ -25,8 +24,8 @@ services:
 
   nginx:
     build:
-      context: .
-      dockerfile: ./docker/nginx.Dockerfile
+      context: ./nginx
+      dockerfile: ./nginx.Dockerfile
     ports:
       - "8080:80"
     networks:
@@ -37,7 +36,7 @@ services:
 
   mysql:
     image: mysql:8
-    command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password --lower_case_table_names=1
     restart: always
     tty: true
     ports:
