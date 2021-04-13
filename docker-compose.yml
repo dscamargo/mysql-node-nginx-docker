@@ -6,7 +6,7 @@ services:
       dockerfile: ./node.Dockerfile
     ports:
       - "3000:3000"
-    entrypoint: dockerize -wait tcp://mysql:3306 -timeout 20s node index.js
+    entrypoint: dockerize -wait tcp://mysql:3306 -timeout 30s node index.js
     environment:
       PORT: 3000
       DB_NAME: docker

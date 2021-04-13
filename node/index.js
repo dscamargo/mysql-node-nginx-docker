@@ -16,7 +16,7 @@ const createTableIfNotExists = () => {
 }
 
 const populatePeople = () => {
-    const sql = `INSERT INTO people(name) VALUES("Full Cycle")`
+    const sql = `INSERT INTO people(name) VALUES('Dev'),('Full Cycle')`
     connection.query(sql)
 }
 
